@@ -1,6 +1,6 @@
 // For a new schedule created
 export class Schedule {
-    consturctor(name) {
+    constructor(name) {
         this.name = name;
         this.operations = [];
     }
@@ -12,17 +12,17 @@ export class Schedule {
     printOperations() {
         console.log(`Schedule: ${this.name}`);
         this.operations.forEach(operation => {
-            console.log(operation());
+            console.log(operation);
         });
     }
 }
 
 export class OperationTemplates {
-    static transferPlate(objectName, transferFromCurrentLocation, source, destination, lidHandlerAction) {
-        return `Transfer object '${objectName}' from Current Location: '${transferFromCurrentLocation}', Source: '${source}', Destination: '${destination}', Lid Handler Action: '${lidHandlerAction}'`;
+    static transferPlate(objectName, source, destination, lidHandlerAction) {
+        return `Transfer object '${objectName}' from (Source) '${source}' to LocationType '${destination}', Lid Handler Action: '${lidHandlerAction}'`;
     }
 
-    static deviceOperation(objectName, deviceType, operationName) {
-        return `${operationName} Operation: Device Type: '${deviceType}', Object: '${objectName}'`;
+    static deviceOperation(operationName, deviceType, objectName ) {
+        return `Invoke operation: '${operationName}' Device Type: '${deviceType}', Object: '${objectName}'`;
     }
 }
