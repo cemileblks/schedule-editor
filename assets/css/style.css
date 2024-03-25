@@ -43,11 +43,11 @@ body {
 }
 
 #create-schedule-btn:hover {
-    background-color: #6DDACC; 
+    background-color: #6DDACC;
 }
 
 #delete-schedule-btn {
-    background-color: #F8B1B1; 
+    background-color: #F8B1B1;
 }
 
 #delete-schedule-btn:hover {
@@ -79,13 +79,13 @@ body {
 }
 
 .filter-section button:hover {
-background-color: #d4d4d4;
+    background-color: #d4d4d4;
 }
 
 .sidebar h3 {
     font-size: 16px;
     font-weight: 300;
-    color: #9e9e9e; 
+    color: #9e9e9e;
 }
 
 #schedules-list ul {
