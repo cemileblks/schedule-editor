@@ -15,6 +15,15 @@ const schedulesList = document.getElementById("schedules-list");
 const openedSchedule = document.getElementsByClassName("opened-schedules");
 const operationsContainer = document.getElementsByClassName("schedule-operation-container");
 
+function arrangeSchedules() {
+    const listItems = [...schedulesList.children];
+    listItems.sort((a, b) => a.textContent.localeCompare(b.textContent));
+    schedulesList.innerHTML = ""; // assuming user does not use HTML markup in naming of their schedules
+    listItems.forEach(item => schedulesList.appendChild(item));
+}
+
+arrangeSchedules();
+
 createButton.addEventListener("click", () => {
     const scheduleName = prompt("Enter a name for the new schedule:");
 
@@ -27,5 +36,8 @@ createButton.addEventListener("click", () => {
         newScheduleItem.tabIndex = 0;
         newScheduleItem.classList.add("schedule-item");
         schedulesList.appendChild(newScheduleItem);
-    }
-})
+
+        arrangeSchedules();
+    };
+});
+
