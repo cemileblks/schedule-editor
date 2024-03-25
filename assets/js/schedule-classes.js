@@ -1,5 +1,5 @@
 // For a new schedule created
-class Schedule {
+export class Schedule {
     consturctor(name) {
         this.name = name;
         this.operations = [];
@@ -17,7 +17,7 @@ class Schedule {
     }
 }
 
-class OperationTemplates {
+export class OperationTemplates {
     static transferPlate(objectName, transferFromCurrentLocation, source, destination, lidHandlerAction) {
         return `Transfer object '${objectName}' from Current Location: '${transferFromCurrentLocation}', Source: '${source}', Destination: '${destination}', Lid Handler Action: '${lidHandlerAction}'`;
     }
