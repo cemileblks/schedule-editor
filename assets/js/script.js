@@ -41,3 +41,17 @@ createButton.addEventListener("click", () => {
     };
 });
 
+scheduleFilter.addEventListener("input", () => {
+    const filterText = scheduleFilter.value.toLowerCase(); // convert input to lowercase
+    const listItems = schedulesList.querySelectorAll("li.schedule-item");
+
+    listItems.forEach(item => {
+        const itemName = item.textContent.toLowerCase();
+        // check if the filter text is "*" (wildcard) or if the list item contains the filter text
+        if (filterText === "*" || itemName.includes(filterText.replace("*", ""))) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+    });
+});
