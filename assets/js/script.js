@@ -26,6 +26,15 @@ function arrangeSchedules() {
     listItems.forEach(item => schedulesList.appendChild(item));
 }
 
+function saveScheduleToLocalStorage(schedule) {
+    localStorage.setItem(schedule.name, JSON.stringify(schedule));
+}
+
+function getScheduleFromLocalStorage(scheduleName) {
+    const scheduleJson = localStorage.getItem(scheduleName);
+    return scheduleJson ? JSON.parse(scheduleJson) : null;
+}
+
 arrangeSchedules();
 
 createButton.addEventListener("click", () => {
@@ -44,6 +53,9 @@ createButton.addEventListener("click", () => {
         // update the content on the main page with the newly added schedule
         // const openedScheduleTitle = document.querySelector(".opened-schedules h3");
         openedScheduleTitle.textContent = scheduleName;
+
+        //save to local storage
+        saveScheduleToLocalStorage(currentSchedule);
 
         arrangeSchedules();
     };
@@ -110,5 +122,7 @@ addOperationButton.addEventListener("click", () => {
     operationListItem.textContent = operation;
     const scheduleOperationContainer = document.querySelector(".schedule-operation-container");
     scheduleOperationContainer.appendChild(operationListItem);
+
+    saveScheduleToLocalStorage(currentSchedule);
 
 });
