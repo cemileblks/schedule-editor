@@ -36,6 +36,9 @@ createButton.addEventListener("click", () => {
         newScheduleItem.tabIndex = 0;
         newScheduleItem.classList.add("schedule-item");
         schedulesList.appendChild(newScheduleItem);
+        // update the content on the main page with the newly added schedule
+        const openedScheduleTitle = document.querySelector(".opened-schedules h3");
+        openedScheduleTitle.textContent = scheduleName;
 
         arrangeSchedules();
     };
@@ -55,3 +58,14 @@ scheduleFilter.addEventListener("input", () => {
         }
     });
 });
+
+schedulesList.addEventListener("click", (e) => {
+    const clickedSchedule = e.target;
+    // check if the click is on one of the schedules on the list
+    if (clickedSchedule.tagName === "LI"){
+        const scheduleName = clickedSchedule.textContent;
+        // update the content on the main page
+        const openedScheduleTitle = document.querySelector(".opened-schedules h3");
+        openedScheduleTitle.textContent = scheduleName;
+    }
+})
