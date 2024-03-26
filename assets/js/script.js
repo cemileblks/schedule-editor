@@ -27,12 +27,14 @@ function arrangeSchedules() {
 }
 
 function saveScheduleToLocalStorage(schedule) {
-    localStorage.setItem(schedule.name, JSON.stringify(schedule));
+    let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
+    schedules[schedule.name] = schedule;
+    localStorage.setItem("schedules", JSON.stringify(schedules));
 }
 
 function getScheduleFromLocalStorage(scheduleName) {
-    const scheduleJson = localStorage.getItem(scheduleName);
-    return scheduleJson ? JSON.parse(scheduleJson) : null;
+    let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
+    return schedules[scheduleName] || null;
 }
 
 arrangeSchedules();
@@ -56,6 +58,7 @@ createButton.addEventListener("click", () => {
 
         //save to local storage
         saveScheduleToLocalStorage(currentSchedule);
+        loadScheduleList();
 
         arrangeSchedules();
     };
@@ -74,6 +77,21 @@ scheduleFilter.addEventListener("input", () => {
             item.style.display = "none";
         }
     });
+});
+
+function loadScheduleList() {
+    schedulesList.innerHTML = ""; // Clear the current list
+    let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
+    for (let scheduleName in schedules) {
+        const scheduleListItem = document.createElement("li");
+        scheduleListItem.textContent = scheduleName;
+        scheduleListItem.classList.add("schedule-item");
+        schedulesList.appendChild(scheduleListItem);
+    }
+}
+
+window.addEventListener("load", () => {
+    loadScheduleList();
 });
 
 schedulesList.addEventListener("click", (e) => {
