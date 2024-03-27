@@ -14,7 +14,7 @@ const infoButton = document.getElementById("info-btn");
 const schedulesList = document.getElementById("schedules-list");
 const openedSchedule = document.getElementsByClassName("opened-schedules");
 const openedScheduleTitle = document.querySelector(".opened-schedules h3");
-const operationsContainer = document.getElementsByClassName("schedule-operation-container");
+const operationsContainer = document.getElementById("schedule-operation-container");
 const addOperationButton = document.getElementById("add-operation-btn");
 
 let currentSchedule;
@@ -37,6 +37,33 @@ function getScheduleFromLocalStorage(scheduleName) {
     return schedules[scheduleName] || null;
 }
 
+function loadScheduleOperations(scheduleName) {
+    const schedule = getScheduleFromLocalStorage(scheduleName);
+   
+    if (schedule) {
+        currentSchedule = new Schedule(schedule.name); // assign the loaded schedule to currentSchedule
+        currentSchedule.operations = schedule.operations; // copy operations from loaded schedule
+        // clear the operations from another operation
+        while (operationsContainer.firstElementChild) {
+            operationsContainer.removeChild(operationsContainer.firstElementChild);
+        }
+        // iterate through operations and display them
+        currentSchedule.operations.forEach(operation => {
+            const operationListItem = document.createElement("li");
+            operationListItem.textContent = operation;
+            operationsContainer.appendChild(operationListItem);
+        });
+        // show the add operation button
+        operationsContainer.appendChild(addOperationButton);
+    } else {
+        // clear the operations container if no schedule is found
+        while (operationsContainer.firstElementChild) {
+            operationsContainer.removeChild(operationsContainer.firstElementChild);
+        }
+        operationsContainer.appendChild(addOperationButton);
+    }
+}
+
 arrangeSchedules();
 
 createButton.addEventListener("click", () => {
@@ -44,20 +71,18 @@ createButton.addEventListener("click", () => {
 
     if (scheduleName) {
 
-        // const newSchedule = new Schedule(scheduleName);
         currentSchedule = new Schedule(scheduleName);
 
-        const newScheduleItem = document.createElement("li");
-        newScheduleItem.textContent = scheduleName;
-        newScheduleItem.tabIndex = 0;
-        newScheduleItem.classList.add("schedule-item");
-        schedulesList.appendChild(newScheduleItem);
         // update the content on the main page with the newly added schedule
-        // const openedScheduleTitle = document.querySelector(".opened-schedules h3");
         openedScheduleTitle.textContent = scheduleName;
 
         //save to local storage
         saveScheduleToLocalStorage(currentSchedule);
+
+        operationsContainer.innerHTML = "";
+        
+        operationsContainer.appendChild(addOperationButton);
+
         loadScheduleList();
 
         arrangeSchedules();
@@ -85,6 +110,7 @@ function loadScheduleList() {
     for (let scheduleName in schedules) {
         const scheduleListItem = document.createElement("li");
         scheduleListItem.textContent = scheduleName;
+        scheduleListItem.tabIndex = 0;
         scheduleListItem.classList.add("schedule-item");
         schedulesList.appendChild(scheduleListItem);
     }
@@ -100,8 +126,8 @@ schedulesList.addEventListener("click", (e) => {
     if (clickedSchedule.tagName === "LI") {
         const scheduleName = clickedSchedule.textContent;
         // update the content on the main page
-        const openedScheduleTitle = document.querySelector(".opened-schedules h3");
         openedScheduleTitle.textContent = scheduleName;
+        loadScheduleOperations(scheduleName);
     };
 });
 
@@ -138,8 +164,8 @@ addOperationButton.addEventListener("click", () => {
     // Display the operation in the schedule operation container
     const operationListItem = document.createElement("li");
     operationListItem.textContent = operation;
-    const scheduleOperationContainer = document.querySelector(".schedule-operation-container");
-    scheduleOperationContainer.appendChild(operationListItem);
+
+    operationsContainer.appendChild(operationListItem);
 
     saveScheduleToLocalStorage(currentSchedule);
 

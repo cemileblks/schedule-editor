@@ -121,7 +121,7 @@ body {
     box-sizing: border-box;
 }
 
-.schedule-operation-container {
+#schedule-operation-container {
     position: relative;
     width: 100%;
     height: 250px;
