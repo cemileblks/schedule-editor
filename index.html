@@ -27,9 +27,7 @@
             <h3>SCHEDULE NAMES</h3>
             <div>
                 <ul id="schedules-list">
-                    <!-- <li class="schedule-item" tabindex="0">Assay1</li>
-                    <li class="schedule-item" tabindex="0">RunSchedule1Batch</li>
-                    <li class="schedule-item" tabindex="0">RunSchedule2Batch</li> -->
+                    
                 </ul>
             </div>
         </aside>
@@ -44,13 +42,20 @@
                 <div id="schedule-operation-container">
                     <button type="button" id="add-operation-btn">+</button>
                 </div>
-                <textarea class="schedule-operation" aria-label="Edit schedule operations"></textarea>
             </div>
         </main>
     </div>
 
     <script src="./assets/js/script.js" type="module"></script>
     <script src="./assets/js/schedule-classes.js" type="module"></script>
+
+    <div class="context-menu" id="context-menu">
+        <ul>
+            <li id="duplicate-schedule">Duplicate Schedule</li>
+            <li id="create-schedule">Create New Schedule</li>
+            <li id="delete-schedule">Delete Schedule</li>
+        </ul>
+    </div>
 </body>
 
 </html>

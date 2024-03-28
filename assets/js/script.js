@@ -7,15 +7,20 @@ mySchedule.addOperation(OperationTemplates.deviceOperation("DispenseReagent", "B
 
 mySchedule.printOperations();
 
+
 const createButton = document.getElementById("create-schedule-btn");
 const deleteButton = document.getElementById("delete-schedule-btn");
 const scheduleFilter = document.getElementById("schedule-filter");
 const infoButton = document.getElementById("info-btn");
+const sidebar = document.querySelector(".sidebar")
 const schedulesList = document.getElementById("schedules-list");
+const main = document.querySelector(".main")
 const openedSchedule = document.getElementsByClassName("opened-schedules");
 const openedScheduleTitle = document.querySelector(".opened-schedules h3");
 const operationsContainer = document.getElementById("schedule-operation-container");
 const addOperationButton = document.getElementById("add-operation-btn");
+const contextMenu = document.getElementById("context-menu");
+const duplicateSchedule = document.getElementById("duplicate-schedule");
 
 let currentSchedule;
 
@@ -39,7 +44,7 @@ function getScheduleFromLocalStorage(scheduleName) {
 
 function loadScheduleOperations(scheduleName) {
     const schedule = getScheduleFromLocalStorage(scheduleName);
-   
+
     if (schedule) {
         currentSchedule = new Schedule(schedule.name); // assign the loaded schedule to currentSchedule
         currentSchedule.operations = schedule.operations; // copy operations from loaded schedule
@@ -64,7 +69,6 @@ function loadScheduleOperations(scheduleName) {
     }
 }
 
-arrangeSchedules();
 
 createButton.addEventListener("click", () => {
     const scheduleName = prompt("Enter a name for the new schedule:");
@@ -80,7 +84,7 @@ createButton.addEventListener("click", () => {
         saveScheduleToLocalStorage(currentSchedule);
 
         operationsContainer.innerHTML = "";
-        
+
         operationsContainer.appendChild(addOperationButton);
 
         loadScheduleList();
@@ -113,8 +117,11 @@ function loadScheduleList() {
         scheduleListItem.tabIndex = 0;
         scheduleListItem.classList.add("schedule-item");
         schedulesList.appendChild(scheduleListItem);
-    }
-}
+    };
+
+    arrangeSchedules();
+};
+
 
 window.addEventListener("load", () => {
     loadScheduleList();
@@ -168,5 +175,56 @@ addOperationButton.addEventListener("click", () => {
     operationsContainer.appendChild(operationListItem);
 
     saveScheduleToLocalStorage(currentSchedule);
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Show custom context menu when a schedule item is right-clicked
+    schedulesList.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        const target = e.target;
+        if (target.classList.contains("schedule-item")) {
+            contextMenu.style.display = "block";
+            contextMenu.style.left = e.pageX + "px";
+            contextMenu.style.top = e.pageY + "px";
+            contextMenu.dataset.scheduleName = target.textContent; // Store schedule name
+        }
+    });
+
+    // Hide context menu
+    window.addEventListener("click", function (e) {
+        if (e.target !== schedulesList && !schedulesList.contains(e.target)) {
+            contextMenu.style.display = "none";
+        }
+    });
+
+    sidebar.addEventListener("scroll", function () {
+        contextMenu.style.display = "none";
+    });
+
+    main.addEventListener("scroll", function () {
+        contextMenu.style.display = "none";
+    });
+
+
+    // Duplicate schedule
+    duplicateSchedule.addEventListener("click", function () {
+        const scheduleName = contextMenu.dataset.scheduleName;
+        const selectedSchedule = getScheduleFromLocalStorage(scheduleName);
+        if (selectedSchedule) {
+            const duplicatedSchedule = new Schedule(scheduleName + " (Copy)");
+            duplicatedSchedule.operations = selectedSchedule.operations.slice(); // Create a deep copy of operations
+            saveNewScheduleToLocalStorage(duplicatedSchedule.name, duplicatedSchedule);
+            loadScheduleList();
+        }
+        contextMenu.style.display = "none";
+    });
+
+    function saveNewScheduleToLocalStorage(scheduleName, scheduleContent) {
+        let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
+        schedules[scheduleName] = scheduleContent;
+        localStorage.setItem("schedules", JSON.stringify(schedules));
+    }
 
 });
