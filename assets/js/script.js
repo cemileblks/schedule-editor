@@ -22,6 +22,7 @@ const addOperationButton = document.getElementById("add-operation-btn");
 const contextMenu = document.getElementById("context-menu");
 const duplicateSchedule = document.getElementById("duplicate-schedule");
 const createSchedule = document.getElementById("create-schedule");
+const deleteSchedule = document.getElementById("delete-schedule");
 
 let currentSchedule;
 
@@ -276,6 +277,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const scheduleName = prompt("Enter a name for the new schedule:");
         createNewSchedule(scheduleName);
         contextMenu.style.display = "none";
+    });
+
+    deleteSchedule.addEventListener("click", function () {
+        const scheduleName = contextMenu.dataset.scheduleName;
+        deleteScheduleFromLocalStorage(scheduleName);
+
+        if (currentSchedule && currentSchedule.name === scheduleName) {
+            operationsContainer.innerHTML = "";
+            openedScheduleTitle.textContent = "";
+            currentSchedule = null;
+        }
+
+        loadScheduleList();
+        alert(`Schedule "${scheduleName}" has been deleted.`);
     });
 
     function saveNewScheduleToLocalStorage(scheduleName, scheduleContent) {
