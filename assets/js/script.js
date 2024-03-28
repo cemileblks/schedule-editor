@@ -52,12 +52,14 @@ const loadScheduleOperations = function(scheduleName) {
         while (operationsContainer.firstElementChild) {
             operationsContainer.removeChild(operationsContainer.firstElementChild);
         }
+        const operationList = document.createElement('ul');
         // iterate through operations and display them
         currentSchedule.operations.forEach(operation => {
             const operationListItem = document.createElement("li");
             operationListItem.textContent = operation;
-            operationsContainer.appendChild(operationListItem);
+            operationList.appendChild(operationListItem);
         });
+        operationsContainer.appendChild(operationList);
         // show the add operation button
         operationsContainer.appendChild(addOperationButton);
     } else {

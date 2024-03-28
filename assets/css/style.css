@@ -3,6 +3,17 @@ body {
     margin: 0;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+h4 {
+    font-size: 14px;
+    color: #494949;
+    font-weight: 400;
+}
+
 #header {
     background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     padding: 15px;
@@ -108,29 +119,25 @@ body {
 
 .main {
     flex-grow: 1;
-    padding: 20px;
+    padding: 20px 50px 20px 50px;
     overflow-y: auto;
 }
 
-.schedule-operation {
-    width: 100%;
-    height: 150px;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+hr {
+    border-top: 1px solid #bbb;
 }
 
 #schedule-operation-container {
     position: relative;
     width: 100%;
-    height: 250px;
+    height: 350px;
     margin-top: 10px;
-    padding: 10px;
+    padding: 0px 20px 10px 20px;
     border: 3px solid #ccc;
     box-sizing: border-box;
     border-radius: 15px;
     background-color: #f1f1f1;
+    overflow-y: auto;
 }
 
 #add-operation-btn {

@@ -19,10 +19,10 @@ export class Schedule {
 
 export class OperationTemplates {
     static transferPlate(objectName, source, destination, lidHandlerAction) {
-        return `Transfer object '${objectName}' from (Source) '${source}' to LocationType '${destination}', Lid Handler Action: '${lidHandlerAction}'`;
+        return `🔄 Transfer object '${objectName}' from (Source) '${source}' to LocationType '${destination}', Lid Handler Action: '${lidHandlerAction}'`;
     }
 
     static deviceOperation(operationName, deviceType, objectName ) {
-        return `Invoke operation: '${operationName}' Device Type: '${deviceType}', Object: '${objectName}'`;
+        return `⚙️ Invoke operation: '${operationName}' Device Type: '${deviceType}', Object: '${objectName}'`;
     }
 }
