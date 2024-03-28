@@ -1,21 +1,11 @@
 import { Schedule, OperationTemplates } from "./schedule-classes.js";
 
-let mySchedule = new Schedule("MyChemSchedule");
-
-mySchedule.addOperation(OperationTemplates.transferPlate("Plate1", true, "Lab1", "Lab2", "Replace Lid"));
-mySchedule.addOperation(OperationTemplates.deviceOperation("DispenseReagent", "Bioraptr", "plate"));
-
-mySchedule.printOperations();
-
-
 const createButton = document.getElementById("create-schedule-btn");
 const deleteButton = document.getElementById("delete-schedule-btn");
 const scheduleFilter = document.getElementById("schedule-filter");
-const infoButton = document.getElementById("info-btn");
 const sidebar = document.querySelector(".sidebar")
 const schedulesList = document.getElementById("schedules-list");
 const main = document.querySelector(".main")
-const openedSchedule = document.getElementsByClassName("opened-schedules");
 const openedScheduleTitle = document.querySelector(".opened-schedules h3");
 const operationsContainer = document.getElementById("schedule-operation-container");
 const addOperationButton = document.getElementById("add-operation-btn");
@@ -26,57 +16,38 @@ const deleteSchedule = document.getElementById("delete-schedule");
 
 let currentSchedule;
 
-function arrangeSchedules() {
+// Function to arrange schedules alphebetically 
+const arrangeSchedules = function() {
     const listItems = [...schedulesList.children];
     listItems.sort((a, b) => a.textContent.localeCompare(b.textContent));
     schedulesList.innerHTML = ""; // assuming user does not use HTML markup in naming of their schedules
     listItems.forEach(item => schedulesList.appendChild(item));
 }
 
-function saveScheduleToLocalStorage(schedule) {
+const saveScheduleToLocalStorage = function(schedule) {
     let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
     schedules[schedule.name] = schedule;
     localStorage.setItem("schedules", JSON.stringify(schedules));
 }
 
-function getScheduleFromLocalStorage(scheduleName) {
+const getScheduleFromLocalStorage = function(scheduleName) {
     let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
     return schedules[scheduleName] || null;
 }
 
-function deleteScheduleFromLocalStorage(scheduleName) {
+const deleteScheduleFromLocalStorage = function(scheduleName) {
     let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
     delete schedules[scheduleName];
     localStorage.setItem("schedules", JSON.stringify(schedules));
 }
 
-function createNewSchedule(scheduleName) {
-    if (scheduleName) {
-
-        currentSchedule = new Schedule(scheduleName);
-
-        // update the content on the main page with the newly added schedule
-        openedScheduleTitle.textContent = scheduleName;
-
-        //save to local storage
-        saveScheduleToLocalStorage(currentSchedule);
-
-        operationsContainer.innerHTML = "";
-
-        operationsContainer.appendChild(addOperationButton);
-
-        loadScheduleList();
-
-        arrangeSchedules();
-    };
-}
-
-function loadScheduleOperations(scheduleName) {
+// Function to load operations for the currently open schedule
+const loadScheduleOperations = function(scheduleName) {
     const schedule = getScheduleFromLocalStorage(scheduleName);
 
     if (schedule) {
-        currentSchedule = new Schedule(schedule.name); // assign the loaded schedule to currentSchedule
-        currentSchedule.operations = schedule.operations; // copy operations from loaded schedule
+        currentSchedule = new Schedule(schedule.name); // assign the schedule to currentSchedule
+        currentSchedule.operations = schedule.operations;
         // clear the operations from another operation
         while (operationsContainer.firstElementChild) {
             operationsContainer.removeChild(operationsContainer.firstElementChild);
@@ -98,30 +69,38 @@ function loadScheduleOperations(scheduleName) {
     }
 }
 
+const loadScheduleList = function() {
+    schedulesList.innerHTML = ""; // Clear the current list
+    let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
+    for (let scheduleName in schedules) {
+        const scheduleListItem = document.createElement("li");
+        scheduleListItem.textContent = scheduleName;
+        scheduleListItem.tabIndex = 0;
+        scheduleListItem.classList.add("schedule-item");
+        schedulesList.appendChild(scheduleListItem);
+    };
+
+    arrangeSchedules();
+};
+
+const createNewSchedule = function(scheduleName) {
+    if (!scheduleName) return;
+
+    currentSchedule = new Schedule(scheduleName);
+    // update the title on the main page with the newly added schedule
+    openedScheduleTitle.textContent = scheduleName;
+
+    saveScheduleToLocalStorage(currentSchedule);
+    operationsContainer.innerHTML = "";
+    operationsContainer.appendChild(addOperationButton);
+    loadScheduleList();
+    arrangeSchedules();
+}
 
 createButton.addEventListener("click", () => {
     const scheduleName = prompt("Enter a name for the new schedule:");
 
     createNewSchedule(scheduleName);
-
-    // if (scheduleName) {
-
-    //     currentSchedule = new Schedule(scheduleName);
-
-    //     // update the content on the main page with the newly added schedule
-    //     openedScheduleTitle.textContent = scheduleName;
-
-    //     //save to local storage
-    //     saveScheduleToLocalStorage(currentSchedule);
-
-    //     operationsContainer.innerHTML = "";
-
-    //     operationsContainer.appendChild(addOperationButton);
-
-    //     loadScheduleList();
-
-    //     arrangeSchedules();
-    // };
 });
 
 deleteButton.addEventListener("click", () => {
@@ -133,15 +112,10 @@ deleteButton.addEventListener("click", () => {
     const scheduleName = currentSchedule.name;
 
     deleteScheduleFromLocalStorage(scheduleName);
-
     operationsContainer.innerHTML = "";
-
     loadScheduleList();
-
     currentSchedule = null;
-
     openedScheduleTitle.textContent = "";
-
     alert(`Schedule "${scheduleName}" has been deleted.`);
 })
 
@@ -160,25 +134,6 @@ scheduleFilter.addEventListener("input", () => {
     });
 });
 
-function loadScheduleList() {
-    schedulesList.innerHTML = ""; // Clear the current list
-    let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
-    for (let scheduleName in schedules) {
-        const scheduleListItem = document.createElement("li");
-        scheduleListItem.textContent = scheduleName;
-        scheduleListItem.tabIndex = 0;
-        scheduleListItem.classList.add("schedule-item");
-        schedulesList.appendChild(scheduleListItem);
-    };
-
-    arrangeSchedules();
-};
-
-
-window.addEventListener("load", () => {
-    loadScheduleList();
-});
-
 schedulesList.addEventListener("click", (e) => {
     const clickedSchedule = e.target;
     // check if the click is on one of the schedules on the list
@@ -190,6 +145,7 @@ schedulesList.addEventListener("click", (e) => {
     };
 });
 
+// Function to add new operation to the current schedule
 addOperationButton.addEventListener("click", () => {
     if (!currentSchedule) {
         alert("Please create a schedule first.");
@@ -230,7 +186,10 @@ addOperationButton.addEventListener("click", () => {
 
 });
 
+// Functions to be executed after everyting is loaded
 document.addEventListener("DOMContentLoaded", function () {
+
+    loadScheduleList();
 
     // Show custom context menu when a schedule item is right-clicked
     schedulesList.addEventListener("contextmenu", function (e) {
@@ -273,12 +232,14 @@ document.addEventListener("DOMContentLoaded", function () {
         contextMenu.style.display = "none";
     });
 
+    // Create new schedule using the context menu
     createSchedule.addEventListener("click", function () {
         const scheduleName = prompt("Enter a name for the new schedule:");
         createNewSchedule(scheduleName);
         contextMenu.style.display = "none";
     });
 
+    // Delete the right clicked schedule using the context menu
     deleteSchedule.addEventListener("click", function () {
         const scheduleName = contextMenu.dataset.scheduleName;
         deleteScheduleFromLocalStorage(scheduleName);
