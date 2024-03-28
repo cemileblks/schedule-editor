@@ -22,13 +22,14 @@
             <button type="button" id="delete-schedule-btn" title="Delete schedule">Delete Current Schedule</button>
             <div class="filter-section">
                 <input type="text" id="schedule-filter" placeholder="Filter schedules...">
-                <button type="button" aria-label="info button" title=" You can filter through existing schedules using the filter box. To add operations, look for the plus button.">?</button>
+                <button type="button" aria-label="info button" id="info-btn"
+                    title=" You can filter through existing schedules using the filter box. To add operations, look for the plus button.">?</button>
             </div>
-            <h3>SCHEDULE NAMES</h3>
-            <div>
-                <ul id="schedules-list">
-                    
-                </ul>
+            <div id="schedule-names">
+                <h3>SCHEDULE NAMES</h3>
+                <div>
+                    <ul id="schedules-list"></ul>
+                </div>
             </div>
         </aside>
 
@@ -41,7 +42,8 @@
             <div class="schedule">
                 <h4>Schedule Operations</h4>
                 <div id="schedule-operation-container">
-                    <button type="button" id="add-operation-btn" aria-label="add schedule operation" title="Add schedule operation">+</button>
+                    <button type="button" id="add-operation-btn" aria-label="add schedule operation"
+                        title="Add schedule operation">+</button>
                 </div>
             </div>
         </main>

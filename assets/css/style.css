@@ -1,6 +1,11 @@
+/* Global styles */
+
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: auto;
 }
 
 ul {
@@ -14,9 +19,15 @@ h4 {
     font-weight: 400;
 }
 
+/* Header styles */
+
 #header {
     background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     padding: 15px;
+    position: sticky; /* Sticky header */
+    top: 0;
+    width: 100%;
+    z-index: 100; /* Ensure it's above other content */
 }
 
 #header h1 {
@@ -25,18 +36,22 @@ h4 {
     margin: 0;
 }
 
+/* Page layout */
+
 #schedule-editor {
     display: flex;
     max-width: 100%;
-    height: 87vh;
+    height: auto;
 }
 
 .sidebar {
     flex-basis: 250px;
     background-color: #f6f6f9;
     padding: 20px;
-    overflow-y: auto;
+    transition: flex-basis 0.2s ease, padding 0.2s ease;
 }
+
+/* Sidebar styles */
 
 .sidebar button {
     width: 100%;
@@ -80,17 +95,23 @@ h4 {
     box-sizing: border-box;
 }
 
-.filter-section button {
+#info-btn {
     width: 30px;
     height: 30px;
     font-weight: bold;
     vertical-align: middle;
+    cursor: help;
     padding: 0;
     margin: 0;
 }
 
-.filter-section button:hover {
+#info-btn:hover {
     background-color: #d4d4d4;
+}
+
+#schedule-names {
+    overflow-y: auto;
+    max-height: calc(100vh - 250px);
 }
 
 .sidebar h3 {
@@ -117,9 +138,12 @@ h4 {
     background-color: #ddd;
 }
 
+/* Main content styles */
+
 .main {
     flex-grow: 1;
     padding: 20px 50px 20px 50px;
+    height: auto;
     overflow-y: auto;
 }
 
@@ -161,6 +185,8 @@ hr {
     background-color: #6DDACC;
 }
 
+/* Context menu styles */
+
 .context-menu {
     display: none;
     position: absolute;
@@ -187,4 +213,30 @@ hr {
 
 .context-menu li:hover {
     background-color: #f0f0f0;
+}
+
+/* Media Queries */
+
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        flex-basis: 70px;
+        padding: 20px;
+    }
+
+    .main {
+        padding: 25px;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    body {
+        overflow: auto;
+    }
+    #schedule-editor {
+        flex-direction: column;
+    }
+    #schedule-names {
+        max-height: 150px; 
+    }
+
 }
