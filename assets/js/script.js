@@ -21,6 +21,7 @@ const operationsContainer = document.getElementById("schedule-operation-containe
 const addOperationButton = document.getElementById("add-operation-btn");
 const contextMenu = document.getElementById("context-menu");
 const duplicateSchedule = document.getElementById("duplicate-schedule");
+const createSchedule = document.getElementById("create-schedule");
 
 let currentSchedule;
 
@@ -46,6 +47,27 @@ function deleteScheduleFromLocalStorage(scheduleName) {
     let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
     delete schedules[scheduleName];
     localStorage.setItem("schedules", JSON.stringify(schedules));
+}
+
+function createNewSchedule(scheduleName) {
+    if (scheduleName) {
+
+        currentSchedule = new Schedule(scheduleName);
+
+        // update the content on the main page with the newly added schedule
+        openedScheduleTitle.textContent = scheduleName;
+
+        //save to local storage
+        saveScheduleToLocalStorage(currentSchedule);
+
+        operationsContainer.innerHTML = "";
+
+        operationsContainer.appendChild(addOperationButton);
+
+        loadScheduleList();
+
+        arrangeSchedules();
+    };
 }
 
 function loadScheduleOperations(scheduleName) {
@@ -79,24 +101,26 @@ function loadScheduleOperations(scheduleName) {
 createButton.addEventListener("click", () => {
     const scheduleName = prompt("Enter a name for the new schedule:");
 
-    if (scheduleName) {
+    createNewSchedule(scheduleName);
 
-        currentSchedule = new Schedule(scheduleName);
+    // if (scheduleName) {
 
-        // update the content on the main page with the newly added schedule
-        openedScheduleTitle.textContent = scheduleName;
+    //     currentSchedule = new Schedule(scheduleName);
 
-        //save to local storage
-        saveScheduleToLocalStorage(currentSchedule);
+    //     // update the content on the main page with the newly added schedule
+    //     openedScheduleTitle.textContent = scheduleName;
 
-        operationsContainer.innerHTML = "";
+    //     //save to local storage
+    //     saveScheduleToLocalStorage(currentSchedule);
 
-        operationsContainer.appendChild(addOperationButton);
+    //     operationsContainer.innerHTML = "";
 
-        loadScheduleList();
+    //     operationsContainer.appendChild(addOperationButton);
 
-        arrangeSchedules();
-    };
+    //     loadScheduleList();
+
+    //     arrangeSchedules();
+    // };
 });
 
 deleteButton.addEventListener("click", () => {
@@ -248,10 +272,16 @@ document.addEventListener("DOMContentLoaded", function () {
         contextMenu.style.display = "none";
     });
 
+    createSchedule.addEventListener("click", function () {
+        const scheduleName = prompt("Enter a name for the new schedule:");
+        createNewSchedule(scheduleName);
+        contextMenu.style.display = "none";
+    });
+
     function saveNewScheduleToLocalStorage(scheduleName, scheduleContent) {
         let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
         schedules[scheduleName] = scheduleContent;
         localStorage.setItem("schedules", JSON.stringify(schedules));
-    }
+    };
 
 });
