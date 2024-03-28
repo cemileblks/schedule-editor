@@ -26,12 +26,21 @@ h4 {
 /* Header styles */
 
 #header {
+    display: flex;
+    align-items: center;
     background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     padding: 15px;
     position: sticky; 
     top: 0;
     width: 100%;
     z-index: 100; 
+}
+
+#header img {
+    margin-right: 15px;
+    margin-left: 10px;
+    height: 36px;
+    width: 36px;
 }
 
 #header h1 {
@@ -48,14 +57,15 @@ h4 {
     height: auto;
 }
 
+/* Sidebar styles */
+
 .sidebar {
     flex-basis: 250px;
     background-color: #f6f6f9;
     padding: 20px;
     transition: flex-basis 0.2s ease, padding 0.2s ease;
+    height: 90vh;
 }
-
-/* Sidebar styles */
 
 .sidebar button {
     width: 100%;
