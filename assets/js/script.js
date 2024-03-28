@@ -113,6 +113,12 @@ deleteButton.addEventListener("click", () => {
 
     const scheduleName = currentSchedule.name;
 
+    // Ask for confirmation before deleting
+    const confirmed = confirm(`Are you sure you want to delete the schedule "${scheduleName}"?`);
+    if (!confirmed) {
+        return;
+    }
+
     deleteScheduleFromLocalStorage(scheduleName);
     operationsContainer.innerHTML = "";
     loadScheduleList();
