@@ -25,4 +25,8 @@ export class OperationTemplates {
     static deviceOperation(operationName, deviceType, objectName ) {
         return `⚙️ Invoke operation: '${operationName}' Device Type: '${deviceType}', Object: '${objectName}'`;
     }
+
+    static sleep(duration) {
+        return `💤 Sleep Duration: ${duration} seconds.`;
+    }
 }

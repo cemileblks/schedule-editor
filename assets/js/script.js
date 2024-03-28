@@ -156,7 +156,7 @@ schedulesList.addEventListener("click", (e) => {
 // Function to add new operation to the current schedule
 addOperationButton.addEventListener("click", () => {
     if (!currentSchedule) {
-        alert("Please create a schedule first.");
+        alert("Please create or select a schedule.");
         return;
     }
 
@@ -164,15 +164,25 @@ addOperationButton.addEventListener("click", () => {
     let operation;
     if (operationType === "transferPlate") {
         const objectName = prompt("Enter the object name:");
-        const source = prompt("Enter the source:");
-        const destination = prompt("Enter the destination:");
-        const lidHandlerAction = prompt("Enter the lid handler action:");
+        const source = prompt("Enter source name:");
+        const destination = prompt("Enter destination name:");
+        const lidHandlerAction = prompt("Enter the lid handler action (remove, replace etc.):");
         operation = OperationTemplates.transferPlate(objectName, source, destination, lidHandlerAction);
     } else if (operationType === "deviceOperation") {
         const operationName = prompt("Enter the operation name:");
         const deviceType = prompt("Enter the device type:");
         const objectName = prompt("Enter the object name:");
         operation = OperationTemplates.deviceOperation(operationName, deviceType, objectName);
+    } else if (operationType === "sleep") {
+        let durationString = prompt("Enter sleep duration (in seconds):");
+        
+        const duration = parseInt(durationString);
+        
+        if (isNaN(duration)) {
+            alert("Please enter a numeric value for sleep duration.");
+            return;
+        }
+        operation = OperationTemplates.sleep(duration);
     } else {
         alert("Invalid operation type!");
         return;
