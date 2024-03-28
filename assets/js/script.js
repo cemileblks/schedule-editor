@@ -42,6 +42,12 @@ function getScheduleFromLocalStorage(scheduleName) {
     return schedules[scheduleName] || null;
 }
 
+function deleteScheduleFromLocalStorage(scheduleName) {
+    let schedules = JSON.parse(localStorage.getItem("schedules")) || {};
+    delete schedules[scheduleName];
+    localStorage.setItem("schedules", JSON.stringify(schedules));
+}
+
 function loadScheduleOperations(scheduleName) {
     const schedule = getScheduleFromLocalStorage(scheduleName);
 
@@ -92,6 +98,27 @@ createButton.addEventListener("click", () => {
         arrangeSchedules();
     };
 });
+
+deleteButton.addEventListener("click", () => {
+    if (!currentSchedule) {
+        alert("No schedule to delete.");
+        return;
+    }
+
+    const scheduleName = currentSchedule.name;
+
+    deleteScheduleFromLocalStorage(scheduleName);
+
+    operationsContainer.innerHTML = "";
+
+    loadScheduleList();
+
+    currentSchedule = null;
+
+    openedScheduleTitle.textContent = "";
+
+    alert(`Schedule "${scheduleName}" has been deleted.`);
+})
 
 scheduleFilter.addEventListener("input", () => {
     const filterText = scheduleFilter.value.toLowerCase(); // convert input to lowercase
