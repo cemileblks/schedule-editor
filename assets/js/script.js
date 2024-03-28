@@ -170,7 +170,7 @@ addOperationButton.addEventListener("click", () => {
 
         operation = OperationTemplates.transferPlate(objectName, source, destination, lidHandlerAction);
 
-    } else if (operationType === "Device operation" || operationType === "Device Operation") {
+    } else if (operationType === "Device operation" || operationType === "Device Operation" || operationType === "device operation") {
         const operationName = prompt("Enter operation to perform:");
         const deviceType = prompt("Enter device type:");
         const objectName = prompt("Enter labware object name:");
