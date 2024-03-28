@@ -160,29 +160,33 @@ addOperationButton.addEventListener("click", () => {
         return;
     }
 
-    const operationType = prompt("Enter operation type (transferPlate or deviceOperation)");
+    const operationType = prompt("Enter operation type (Transfer, Device Operation or Sleep)");
     let operation;
-    if (operationType === "transferPlate") {
+    if (operationType === "Transfer" || operationType === "transfer") {
         const objectName = prompt("Enter the object name:");
         const source = prompt("Enter source name:");
         const destination = prompt("Enter destination name:");
         const lidHandlerAction = prompt("Enter the lid handler action (remove, replace etc.):");
+
         operation = OperationTemplates.transferPlate(objectName, source, destination, lidHandlerAction);
-    } else if (operationType === "deviceOperation") {
-        const operationName = prompt("Enter the operation name:");
-        const deviceType = prompt("Enter the device type:");
-        const objectName = prompt("Enter the object name:");
-        operation = OperationTemplates.deviceOperation(operationName, deviceType, objectName);
-    } else if (operationType === "sleep") {
+
+    } else if (operationType === "Device operation" || operationType === "Device Operation") {
+        const operationName = prompt("Enter operation to perform:");
+        const deviceType = prompt("Enter device type:");
+        const objectName = prompt("Enter labware object name:");
+
+        operation = OperationTemplates.invokeOperation(operationName, deviceType, objectName);
+
+    } else if (operationType === "sleep" || operationType === "Sleep") {
         let durationString = prompt("Enter sleep duration (in seconds):");
-        
         const duration = parseInt(durationString);
-        
         if (isNaN(duration)) {
             alert("Please enter a numeric value for sleep duration.");
             return;
         }
+
         operation = OperationTemplates.sleep(duration);
+
     } else {
         alert("Invalid operation type!");
         return;
